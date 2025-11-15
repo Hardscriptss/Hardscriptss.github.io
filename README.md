@@ -1,1 +1,0 @@
-# Hardscriptss.github.io
