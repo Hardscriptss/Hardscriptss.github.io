@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Liquid Music — GAZAN</title>
+<title>Liquid Music — крутой кот</title>
 <style>
 :root{
   --bg:#06121a; --panel:#0d1720; --glass:rgba(255,255,255,0.04);
@@ -19,11 +19,11 @@ body{
     radial-gradient(700px 500px at 90% 90%, rgba(167,139,250,0.04), transparent 20%),
     linear-gradient(180deg,var(--bg), #041018 120%);
   color:var(--text); -webkit-font-smoothing:antialiased;
-  padding-bottom:120px; /* space for fixed player */
+  padding-bottom:140px;
 }
 
 /* App container */
-.app{max-width:900px;margin:0 auto;padding:18px 16px 140px;}
+.app{max-width:900px;margin:0 auto;padding:18px 16px 160px;}
 
 /* Header */
 .header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
@@ -132,7 +132,7 @@ body{
     <div class="logo" aria-hidden></div>
     <div class="title">
       <h1>Liquid Player</h1>
-      <p>GAZAN — TUNG TUNG TUNG SAHUR (Humba)</p>
+      <p>музыка из репозитория — крутой кот</p>
     </div>
   </header>
 
@@ -142,40 +142,37 @@ body{
     <div class="tab" data-target="profile" role="tab">Мой профиль</div>
   </div>
 
-  <section id="trending" class="list" aria-labelledby="trending" >
-    <!-- initially пустой, но трек тоже показывается здесь как тренд (по запросу) -->
-    <div class="row" onclick="playAndOpen('Humba.mp3')" role="button" tabindex="0">
+  <!-- Trending: показывает треки из плейлиста (здесь оба трека) -->
+  <section id="trending" class="list" aria-labelledby="trending" style="display:flex">
+    <div class="row" onclick="openAndPlay(0)" role="button" tabindex="0">
       <div class="blob-small"></div>
-      <div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="cover"></div>
+      <div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="Humba cover"></div>
       <div class="meta">
         <div class="name">TUNG TUNG TUNG SAHUR</div>
         <div class="artist">GAZAN</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px">В тренде · скоро добавится больше треков</div>
       </div>
       <div class="actions">
-        <button class="play-btn" onclick="event.stopPropagation(); playTrack('Humba.mp3')">▶</button>
+        <button class="play-btn" onclick="event.stopPropagation(); playIndex(0)">▶</button>
       </div>
     </div>
-    <!-- placeholder text -->
-    <div style="color:var(--muted);padding:6px 2px;font-size:13px">Пока пусто — добавляй новые треки в репозиторий, они появятся здесь.</div>
+
+    <div class="row" onclick="openAndPlay(1)" role="button" tabindex="0">
+      <div class="blob-small"></div>
+      <div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="Fonk cover"></div>
+      <div class="meta">
+        <div class="name">Fonk</div>
+        <div class="artist">GAZAN</div>
+      </div>
+      <div class="actions">
+        <button class="play-btn" onclick="event.stopPropagation(); playIndex(1)">▶</button>
+      </div>
+    </div>
+
   </section>
 
+  <!-- All music: полный список без дублирования -->
   <section id="all" class="list" style="display:none">
-    <!-- длинный список — дублируем строку для скролла/внешнего вида -->
-    <!-- главное — источник трека: относительный путь Humba.mp3 (и fallback humba.mp3) -->
-    <script id="rows-template" type="text/template">
-      <div class="row" onclick="playAndOpen('Humba.mp3')">
-        <div class="blob-small"></div>
-        <div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="cover"></div>
-        <div class="meta">
-          <div class="name">TUNG TUNG TUNG SAHUR</div>
-          <div class="artist">GAZAN</div>
-        </div>
-        <div class="actions">
-          <button class="play-btn" onclick="event.stopPropagation(); playTrack('Humba.mp3')">▶</button>
-        </div>
-      </div>
-    </script>
+    <!-- row template will be filled by JS; kept empty here for clarity -->
   </section>
 
   <section id="profile" class="list" style="display:none">
@@ -184,9 +181,9 @@ body{
         <div style="width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));"></div>
       </div>
       <div class="meta">
-        <div class="name">Еремей</div>
+        <div class="name">крутой кот</div>
         <div class="artist">Создатель репозитория</div>
-        <div style="margin-top:8px;color:var(--muted);font-size:13px">Статистика: треков 1 · прослушиваний локально — <span id="plays-count">0</span></div>
+        <div style="margin-top:8px;color:var(--muted);font-size:13px">Статистика: треков 2 · прослушиваний локально — <span id="plays-count">0</span></div>
       </div>
     </div>
   </section>
@@ -194,7 +191,7 @@ body{
 
 <!-- Compact bottom player -->
 <div class="player" id="compactPlayer" aria-hidden="false">
-  <div class="thumb" id="compactThumb"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="cover" style="width:100%;height:100%;object-fit:cover"></div>
+  <div class="thumb" id="compactThumb"><img src="" alt="cover" style="width:100%;height:100%;object-fit:cover"></div>
   <div class="info">
     <div class="t" id="cp-title">Нет трека</div>
     <div class="a" id="cp-artist"></div>
@@ -213,11 +210,11 @@ body{
   <div class="modal-card" role="dialog" aria-modal="true">
     <div class="modal-info" style="display:flex;flex-direction:column;gap:12px">
       <div class="modal-top">
-        <div class="modal-cover"><img id="modal-cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="cover" style="width:100%;height:100%;object-fit:cover"></div>
+        <div class="modal-cover"><img id="modal-cover" src="" alt="cover" style="width:100%;height:100%;object-fit:cover"></div>
         <div style="flex:1">
-          <div class="title" id="modal-title">TUNG TUNG TUNG SAHUR</div>
-          <div class="artist" id="modal-artist">GAZAN</div>
-          <div style="margin-top:8px;color:var(--muted)">Источник: Humba.mp3 (репозиторий)</div>
+          <div class="title" id="modal-title"></div>
+          <div class="artist" id="modal-artist"></div>
+          <div style="margin-top:8px;color:var(--muted)">Источник: файл в репозитории</div>
         </div>
       </div>
 
@@ -248,15 +245,17 @@ body{
   </div>
 </div>
 
-<!-- Audio element and script -->
+<!-- Audio element -->
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* Playlist — сейчас один трек, источник: относительный путь "Humba.mp3".
-   Если в репозитории имя файла "humba.mp3", браузер загрузит корректно при регистре в системе.
+/* Плейлист: используем файлы из репозитория рядом с HTML.
+   Файлы: Humba.mp3 и Fonk.mp3
 */
 const playlist = [
-  { src: 'Humba.mp3', alt: 'humba.mp3', title: 'TUNG TUNG TUNG SAHUR', artist: 'GAZAN',
+  { src: 'Humba.mp3', title: 'TUNG TUNG TUNG SAHUR', artist: 'GAZAN',
+    cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10' },
+  { src: 'Fonk.mp3', title: 'Fonk', artist: 'GAZAN',
     cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10' }
 ];
 
@@ -276,64 +275,51 @@ const visCanvas = document.getElementById('vis');
 const modalBar = document.getElementById('modal-bar');
 const timeLabel = document.getElementById('timeLabel');
 const playsCountEl = document.getElementById('plays-count');
+const allSection = document.getElementById('all');
 
-// init UI
-function setTrackUI(track){
-  cpTitle.textContent = track.title;
-  cpArtist.textContent = track.artist;
-  document.getElementById('modal-title').textContent = track.title;
-  document.getElementById('modal-artist').textContent = track.artist;
-  document.getElementById('modal-cover').src = track.cover;
-  compactThumb.querySelector('img').src = track.cover;
+// initialize UI for track i
+function setTrackUI(i){
+  const t = playlist[i];
+  cpTitle.textContent = t.title;
+  cpArtist.textContent = t.artist;
+  document.getElementById('modal-title').textContent = t.title;
+  document.getElementById('modal-artist').textContent = t.artist;
+  document.getElementById('modal-cover').src = t.cover;
+  compactThumb.querySelector('img').src = t.cover;
 }
 
-// attempt to load src — try exact then fallback lowercase
-function resolveSrc(entry){
-  return fetch(entry.src, {method:'HEAD'}).then(r=>{
-    if(r.ok) return entry.src;
-    // try alt
-    return fetch(entry.alt, {method:'HEAD'}).then(r2=>r2.ok?entry.alt:entry.src).catch(()=>entry.src);
-  }).catch(()=>entry.src);
-}
-
-// load current track (with HEAD probe for correct case when possible)
-async function loadTrack(i){
-  const entry = playlist[i];
-  const src = await resolveSrc(entry);
-  audio.src = src;
+// load track by index (no HEAD probing — relative src expected in repo)
+function loadTrack(i){
+  idx = i;
+  audio.src = playlist[i].src;
   audio.load();
-  setTrackUI(entry);
+  setTrackUI(i);
   updateProgress(0,0);
 }
 
-// play track quick (compact)
-function playTrack(src){
-  // if custom src provided — set one-shot (not needed here)
-  audio.src = src;
+// play index (start playback)
+function playIndex(i){
+  loadTrack(i);
   audio.play().catch(()=>{});
 }
 
-// play and open modal
-async function playAndOpen(src){
-  await loadTrack(idx);
+// open modal and play selected
+function openAndPlay(i){
+  loadTrack(i);
   openFull();
-  audio.play().then(()=>{}).catch(()=>{});
+  audio.play().catch(()=>{});
 }
 
-// next/prev (only single track now)
 function nextTrack(){ idx = (idx + 1) % playlist.length; loadTrack(idx); audio.play().catch(()=>{}); }
 function prevTrack(){ idx = (idx - 1 + playlist.length) % playlist.length; loadTrack(idx); audio.play().catch(()=>{}); }
 
-// toggle play/pause
 function togglePlay(){
-  if(!audio.src) { loadTrack(idx).then(()=>audio.play()); return; }
+  if(!audio.src){ loadTrack(idx); audio.play().catch(()=>{}); return; }
   if(audio.paused){ audio.play(); } else { audio.pause(); }
 }
 
-// seek relative seconds
 function seekRelative(sec){ audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + sec)); }
 
-// progress update
 function updateProgress(current, duration){
   const pct = duration ? (current/duration)*100 : 0;
   cpBar.style.width = pct + '%';
@@ -341,7 +327,6 @@ function updateProgress(current, duration){
   timeLabel.textContent = formatTime(current) + ' / ' + formatTime(duration);
 }
 
-// format time
 function formatTime(s){
   if(!isFinite(s)) return '0:00';
   const m = Math.floor(s/60); const sec = Math.floor(s%60);
@@ -349,12 +334,12 @@ function formatTime(s){
 }
 
 // audio events
-audio.addEventListener('play', ()=>{ playBtn.textContent = '⏸'; bigPlay.textContent='⏸';++plays; playsCountEl.textContent = plays; });
+audio.addEventListener('play', ()=>{ playBtn.textContent = '⏸'; bigPlay.textContent='⏸'; ++plays; playsCountEl.textContent = plays; });
 audio.addEventListener('pause', ()=>{ playBtn.textContent = '▶️'; bigPlay.textContent='▶️'; });
 audio.addEventListener('timeupdate', ()=>{ updateProgress(audio.currentTime, audio.duration || 0); });
 audio.addEventListener('ended', ()=>{ nextTrack(); audio.play().catch(()=>{}); });
 
-// click on progress (compact)
+// compact progress seeking
 cpProgress.addEventListener('pointerdown', (e)=>{
   const rect = cpProgress.getBoundingClientRect();
   const x = (e.clientX - rect.left); const pct = x/rect.width;
@@ -369,39 +354,43 @@ document.querySelectorAll('.tab').forEach(t=>{
     document.querySelectorAll('section').forEach(s=>s.style.display='none');
     const target = document.getElementById(t.dataset.target);
     if(target) target.style.display = 'flex';
-    // special: fill 'all' with many rows to simulate long list
-    if(t.dataset.target === 'all' && !document.getElementById('all').dataset.filled){
-      fillAllRows(18); document.getElementById('all').dataset.filled = '1';
+    if(t.dataset.target === 'all' && !allSection.dataset.filled){
+      fillAllRows(); allSection.dataset.filled = '1';
     }
   });
 });
 
-// fill many rows function
-function fillAllRows(count){
-  const template = document.getElementById('rows-template').innerHTML;
-  const container = document.getElementById('all');
-  for(let i=0;i<count;i++){
+// fill "Вся музыка" with actual playlist rows (no duplicates)
+function fillAllRows(){
+  allSection.innerHTML = '';
+  playlist.forEach((tr, i) => {
     const div = document.createElement('div');
-    div.innerHTML = template;
-    // attach event listeners for nested play buttons
-    div.firstElementChild.addEventListener('click', ()=>{ loadTrack(0); audio.play().catch(()=>{}); openFull(); });
+    div.className = 'row';
+    div.tabIndex = 0;
+    div.innerHTML = `
+      <div class="blob-small"></div>
+      <div class="cover"><img src="${tr.cover}" alt="cover"></div>
+      <div class="meta">
+        <div class="name">${tr.title}</div>
+        <div class="artist">${tr.artist}</div>
+      </div>
+      <div class="actions">
+        <button class="play-btn">▶</button>
+      </div>
+    `;
+    div.addEventListener('click', ()=>{ openAndPlay(i); });
     const btn = div.querySelector('.play-btn');
-    if(btn){ btn.addEventListener('click', (ev)=>{ ev.stopPropagation(); loadTrack(0); audio.play().catch(()=>{}); }); }
-    container.appendChild(div.firstElementChild);
-  }
+    btn.addEventListener('click', (ev)=>{ ev.stopPropagation(); playIndex(i); });
+    allSection.appendChild(div);
+  });
 }
 
-// modal open/close
-function openFull(){ modal.classList.add('open'); startVis();}
+// modal controls
+function openFull(){ modal.classList.add('open'); startVis(); }
 function closeFull(){ modal.classList.remove('open'); stopVis(); }
-
-// keyboard escape to close modal
 window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeFull(); });
 
-// initial load
-loadTrack(0);
-
-// WebAudio visualization (spectrum + waveform blend)
+// visualization
 let audioCtx, analyser, sourceNode, dataArray, rafId;
 const canvas = visCanvas;
 const ctx = canvas.getContext('2d');
@@ -414,14 +403,13 @@ function startVis(){
     analyser.fftSize = 2048;
     dataArray = new Uint8Array(analyser.frequencyBinCount);
   }
-  if(!sourceNode || sourceNode.mediaElement !== audio){
-    try{
+  try{
+    if(!sourceNode){
       sourceNode = audioCtx.createMediaElementSource(audio);
       sourceNode.connect(analyser);
       analyser.connect(audioCtx.destination);
-    }catch(e){}
-  }
-  // resume context on user interaction
+    }
+  }catch(e){}
   if(audioCtx.state === 'suspended'){ audioCtx.resume().catch(()=>{}); }
   draw();
 }
@@ -429,7 +417,6 @@ function startVis(){
 function stopVis(){
   if(rafId) cancelAnimationFrame(rafId);
   rafId = null;
-  // clear canvas
   ctx.clearRect(0,0,canvas.width,canvas.height);
 }
 
@@ -437,7 +424,6 @@ function draw(){
   rafId = requestAnimationFrame(draw);
   analyser.getByteFrequencyData(dataArray);
 
-  // canvas size adapt
   const dpr = window.devicePixelRatio || 1;
   const w = canvas.clientWidth * dpr;
   const h = canvas.clientHeight * dpr;
@@ -445,14 +431,12 @@ function draw(){
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // gradient background waves
   const grad = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
   grad.addColorStop(0, 'rgba(110,231,255,0.06)');
   grad.addColorStop(0.6, 'rgba(167,139,250,0.04)');
   ctx.fillStyle = grad;
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // draw waveform-like curve using frequency data
   ctx.lineWidth = 2 * dpr;
   ctx.strokeStyle = 'rgba(255,255,255,0.92)';
   ctx.beginPath();
@@ -466,7 +450,6 @@ function draw(){
   }
   ctx.stroke();
 
-  // top glow blobs from peaks
   const peak = Math.max(...dataArray);
   if(peak > 160){
     ctx.fillStyle = 'rgba(110,231,255,0.08)';
@@ -476,18 +459,8 @@ function draw(){
   }
 }
 
-// household: keep UI in sync if track metadata loads
-audio.addEventListener('loadedmetadata', ()=>{ updateProgress(audio.currentTime || 0, audio.duration || 0); });
-
-// touch-friendly: double-tap cover to open full
-document.querySelectorAll('.row .cover, .player .thumb').forEach(el=>{
-  el.addEventListener('dblclick', ()=>openFull());
-});
-
-// accessibility: allow Enter to activate rows
-document.querySelectorAll('.row').forEach(r=>{
-  r.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') { loadTrack(0); audio.play().catch(()=>{}); openFull(); }});
-});
+// initial setup: load first track metadata to UI, fill all section when opened
+setTrackUI(0);
 </script>
 </body>
 </html>
