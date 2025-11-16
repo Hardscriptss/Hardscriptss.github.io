@@ -6,124 +6,57 @@
 <title>Liquid Music — крутой кот</title>
 <style>
 :root{
-  --bg:#06121a; --panel:#0d1720; --glass:rgba(255,255,255,0.04);
-  --muted:#9fb0c3; --text:#eaf6ff;
-  --accent1:#6ee7ff; --accent2:#a78bfa; --accent3:#22d3ee;
+  --bg:#06121a; --muted:#9fb0c3; --text:#eaf6ff;
+  --accent1:#6ee7ff; --accent2:#a78bfa;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{
-  margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
   background:
     radial-gradient(800px 400px at 10% 10%, rgba(34,211,238,0.06), transparent 20%),
     radial-gradient(700px 500px at 90% 90%, rgba(167,139,250,0.04), transparent 20%),
-    linear-gradient(180deg,var(--bg), #041018 120%);
-  color:var(--text); -webkit-font-smoothing:antialiased;
-  padding-bottom:140px;
+    linear-gradient(180deg,#06121a,#041018 120%);
+  color:var(--text);padding-bottom:140px;
 }
-
-/* App container */
 .app{max-width:900px;margin:0 auto;padding:18px 16px 160px;}
-
-/* Header */
 .header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.logo{
-  width:44px;height:44px;border-radius:12px;
-  background:conic-gradient(from 200deg,var(--accent1),var(--accent2),var(--accent3));
-  box-shadow:0 10px 30px rgba(103,120,255,0.12), inset 0 0 22px rgba(255,255,255,0.06);
-}
-.title h1{margin:0;font-size:18px;letter-spacing:0.2px}
+.logo{width:44px;height:44px;border-radius:12px;background:conic-gradient(from 200deg,var(--accent1),var(--accent2));box-shadow:0 10px 30px rgba(103,120,255,0.12)}
+.title h1{margin:0;font-size:18px}
 .title p{margin:0;font-size:13px;color:var(--muted)}
-
-/* Tabs */
 .tabs{display:flex;gap:8px;margin:14px 0 18px;overflow:auto}
-.tab{
-  flex:1;min-width:110px;text-align:center;padding:10px;border-radius:12px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;border:1px solid rgba(255,255,255,0.04)
-}
+.tab{flex:1;min-width:110px;text-align:center;padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:var(--muted);font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.04)}
 .tab.active{color:var(--text);box-shadow:0 8px 28px rgba(34,211,238,0.06);border:1px solid rgba(110,231,255,0.14)}
-.tab:active{transform:translateY(1px)}
-
-/* List rows (liquid style) */
 .list{display:flex;flex-direction:column;gap:12px}
-.row{
-  display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;position:relative;overflow:hidden;
-  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-  border:1px solid rgba(255,255,255,0.04);backdrop-filter: blur(6px);
-}
-.row .cover{width:64px;height:64px;border-radius:10px;flex:0 0 64px;overflow:hidden}
-.row img{width:100%;height:100%;object-fit:cover;display:block}
-.row .meta{flex:1;min-width:0}
-.row .meta .name{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row .meta .artist{font-size:13px;color:var(--muted);margin-top:4px}
-.row .actions{display:flex;gap:8px;align-items:center}
-.row .play-btn{
-  width:44px;height:44px;border-radius:50%;border:none;display:inline-grid;place-items:center;
-  background:radial-gradient(120% 120% at 20% 20%, rgba(110,231,255,0.12), rgba(167,139,250,0.06));
-  box-shadow:0 10px 28px rgba(34,211,238,0.06);cursor:pointer
-}
-
-/* blob accents */
-.blob-small{
-  position:absolute;width:160%;height:160%;left:-30%;top:-30%;pointer-events:none;
-  background:radial-gradient(closest-side, rgba(110,231,255,0.10), transparent 40%);
-  filter: blur(18px); transform: translateZ(0); animation:float 8s ease-in-out infinite; z-index:0
-}
+.row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;position:relative;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
+.cover{width:64px;height:64px;border-radius:10px;flex:0 0 64px;overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover}
+.meta{flex:1;min-width:0}
+.meta .name{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta .artist{font-size:13px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:8px;align-items:center}
+.play-btn{width:44px;height:44px;border-radius:50%;border:none;display:inline-grid;place-items:center;background:radial-gradient(120% 120% at 20% 20%, rgba(110,231,255,0.12), rgba(167,139,250,0.06));box-shadow:0 10px 28px rgba(34,211,238,0.06);cursor:pointer}
+.blob-small{position:absolute;width:160%;height:160%;left:-30%;top:-30%;pointer-events:none;background:radial-gradient(closest-side, rgba(110,231,255,0.10), transparent 40%);filter: blur(18px);animation:float 8s ease-in-out infinite;z-index:0}
 @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(14px,-10px)}}
-
-/* Player bottom (compact) */
-.player{
-  position:fixed;left:10px;right:10px;bottom:14px;border-radius:18px;padding:10px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  display:flex;align-items:center;gap:12px;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);
-  box-shadow:0 14px 40px rgba(3,6,10,0.6);
-}
+.player{position:fixed;left:10px;right:10px;bottom:14px;border-radius:18px;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));display:flex;align-items:center;gap:12px;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);box-shadow:0 14px 40px rgba(3,6,10,0.6)}
 .player .thumb{width:56px;height:56px;border-radius:14px;overflow:hidden;flex:0 0 56px}
 .player .info{flex:1;min-width:0}
 .player .info .t{font-weight:700;font-size:15px}
 .player .info .a{font-size:12px;color:var(--muted);margin-top:4px}
-.player .controls{display:flex;gap:10px;align-items:center}
-.icon-btn{
-  width:46px;height:46px;border-radius:50%;border:none;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
-  display:grid;place-items:center;color:var(--text);cursor:pointer
-}
-
-/* Progress */
+.icon-btn{width:46px;height:46px;border-radius:50%;border:none;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));display:grid;place-items:center;color:var(--text);cursor:pointer}
 .progress{height:6px;background:rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;margin-top:8px}
 .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 0 18px rgba(110,231,255,0.24);transition:width .12s linear}
-
-/* Fullscreen player modal */
-.modal{
-  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;
-  background:linear-gradient(180deg, rgba(2,6,8,0.6), rgba(0,0,0,0.85));
-  z-index:120; visibility:hidden;opacity:0;transition:opacity .22s ease, visibility .22s;
-}
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(180deg, rgba(2,6,8,0.6), rgba(0,0,0,0.85));z-index:120;visibility:hidden;opacity:0;transition:opacity .22s ease, visibility .22s}
 .modal.open{visibility:visible;opacity:1}
-.modal-card{
-  width:100%;max-width:920px;border-radius:18px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-  border:1px solid rgba(255,255,255,0.05);backdrop-filter:blur(14px);
-  display:flex;flex-direction:column;gap:12px;align-items:stretch;
-  max-height:92vh;overflow:hidden;
-}
+.modal-card{width:100%;max-width:920px;border-radius:18px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.05);backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:12px;align-items:stretch;max-height:92vh;overflow:hidden}
 .modal-top{display:flex;gap:12px;align-items:center}
 .modal-cover{width:120px;height:120px;border-radius:14px;overflow:hidden;flex:0 0 120px}
 .modal-info .title{font-size:20px;font-weight:800}
-.modal-info .artist{color:var(--muted);margin-top:6px}
 .canvas-wrap{width:100%;height:220px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));display:flex;align-items:center;justify-content:center}
-
-/* big controls */
 .big-controls{display:flex;align-items:center;gap:14px;justify-content:center;padding:6px}
 .big-btn{width:64px;height:64px;border-radius:50%;border:none;background:radial-gradient(circle at 20% 20%, rgba(110,231,255,0.18), rgba(167,139,250,0.08));display:grid;place-items:center;font-size:18px;cursor:pointer}
 .small-btn{width:44px;height:44px;border-radius:10px;border:none;background:rgba(255,255,255,0.02);cursor:pointer}
-
-/* responsive tweaks */
-@media (min-width:720px){
-  .app{padding-left:28px;padding-right:28px}
-  .modal-card{flex-direction:row;gap:18px;padding:22px}
-  .canvas-wrap{height:300px;flex:1}
-  .modal-info{flex:0 0 320px}
-}
+@media (min-width:720px){.modal-card{flex-direction:row;gap:18px;padding:22px}.canvas-wrap{height:300px;flex:1}.modal-info{flex:0 0 320px}}
 </style>
 </head>
 <body>
@@ -142,14 +75,14 @@ body{
     <div class="tab" data-target="profile" role="tab">Мой профиль</div>
   </div>
 
-  <!-- Trending: показывает треки из плейлиста (здесь оба трека) -->
-  <section id="trending" class="list" aria-labelledby="trending" style="display:flex">
+  <section id="trending" class="list" style="display:flex">
+    <!-- показываем оба трека -->
     <div class="row" onclick="openAndPlay(0)" role="button" tabindex="0">
       <div class="blob-small"></div>
       <div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="Humba cover"></div>
       <div class="meta">
         <div class="name">TUNG TUNG TUNG SAHUR</div>
-        <div class="artist">GAZAN</div>
+        <div class="artist">МЕЛЛСТРОЙ.ГЕЙ</div>
       </div>
       <div class="actions">
         <button class="play-btn" onclick="event.stopPropagation(); playIndex(0)">▶</button>
@@ -158,22 +91,18 @@ body{
 
     <div class="row" onclick="openAndPlay(1)" role="button" tabindex="0">
       <div class="blob-small"></div>
-      <div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10" alt="Fonk cover"></div>
+      <div class="cover"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo2rtKPwsUPQ5e1C_PPXV7tCwaleaDE7nrQsoYi2qA2A&s=10" alt="Fonk cover"></div>
       <div class="meta">
-        <div class="name">Fonk</div>
-        <div class="artist">GAZAN</div>
+        <div class="name">GAZV</div>
+        <div class="artist">МЕЛЛСТРОЙ.ГЕЙ</div>
       </div>
       <div class="actions">
         <button class="play-btn" onclick="event.stopPropagation(); playIndex(1)">▶</button>
       </div>
     </div>
-
   </section>
 
-  <!-- All music: полный список без дублирования -->
-  <section id="all" class="list" style="display:none">
-    <!-- row template will be filled by JS; kept empty here for clarity -->
-  </section>
+  <section id="all" class="list" style="display:none"></section>
 
   <section id="profile" class="list" style="display:none">
     <div class="row" style="align-items:flex-start">
@@ -189,7 +118,7 @@ body{
   </section>
 </div>
 
-<!-- Compact bottom player -->
+<!-- Компактный плеер -->
 <div class="player" id="compactPlayer" aria-hidden="false">
   <div class="thumb" id="compactThumb"><img src="" alt="cover" style="width:100%;height:100%;object-fit:cover"></div>
   <div class="info">
@@ -205,7 +134,7 @@ body{
   </div>
 </div>
 
-<!-- Fullscreen modal player -->
+<!-- Полноэкранный плеер -->
 <div class="modal" id="modal">
   <div class="modal-card" role="dialog" aria-modal="true">
     <div class="modal-info" style="display:flex;flex-direction:column;gap:12px">
@@ -231,7 +160,7 @@ body{
       </div>
 
       <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;gap:12px;align-items:center;justify-content:center" class="big-controls">
+        <div class="big-controls">
           <button class="big-btn" onclick="prevTrack()">⏮</button>
           <button class="big-btn" id="bigPlay" onclick="togglePlay()">▶️</button>
           <button class="big-btn" onclick="nextTrack()">⏭</button>
@@ -245,23 +174,29 @@ body{
   </div>
 </div>
 
-<!-- Audio element -->
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* Плейлист: используем файлы из репозитория рядом с HTML.
-   Файлы: Humba.mp3 и Fonk.mp3
+/* Плейлист: указываем возможные варианты имён файлов (разный регистр)
+   Поместите файлы Humba.mp3 и fonk.mp3 (или Fonk.mp3) в корень репозитория.
 */
 const playlist = [
-  { src: 'Humba.mp3', title: 'TUNG TUNG TUNG SAHUR', artist: 'GAZAN',
-    cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10' },
-  { src: 'Fonk.mp3', title: 'Fonk', artist: 'GAZAN',
-    cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10' }
+  {
+    names: ['Humba.mp3','humba.mp3'],
+    title: 'TUNG TUNG TUNG SAHUR',
+    artist: 'МЕЛЛСТРОЙ.ГЕЙ',
+    cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP8N2cSCOjyG5P8yhpGsCSFd6GMuhI2gvVkAdMI-CcCA&s=10'
+  },
+  {
+    names: ['fonk.mp3','Fonk.mp3'],
+    title: 'GAZV',
+    artist: 'МЕЛЛСТРОЙ.ГЕЙ',
+    cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo2rtKPwsUPQ5e1C_PPXV7tCwaleaDE7nrQsoYi2qA2A&s=10'
+  }
 ];
 
 let idx = 0;
 let plays = 0;
-
 const audio = document.getElementById('audio');
 const cpTitle = document.getElementById('cp-title');
 const cpArtist = document.getElementById('cp-artist');
@@ -277,7 +212,33 @@ const timeLabel = document.getElementById('timeLabel');
 const playsCountEl = document.getElementById('plays-count');
 const allSection = document.getElementById('all');
 
-// initialize UI for track i
+/* Попытка найти рабочный URL для конкретного трека.
+   Пробует варианты имён по очереди через HEAD, fallback — первый вариант без проверки.
+*/
+async function findAvailableName(names){
+  for(const n of names){
+    try{
+      const res = await fetch(n, {method:'HEAD'});
+      if(res.ok) return n;
+    }catch(e){
+      // fetch может упасть из-за CORS/HEAD; пропускаем
+    }
+  }
+  // если ни один HEAD не сработал — вернём первый вариант (бросаем на относительный путь)
+  return names[0];
+}
+
+/* Загрузка трека по индексу: резолвит имя и ставит audio.src */
+async function loadTrack(i){
+  idx = i;
+  const entry = playlist[i];
+  const file = await findAvailableName(entry.names);
+  audio.src = file;
+  audio.load();
+  setTrackUI(i);
+  updateProgress(0,0);
+}
+
 function setTrackUI(i){
   const t = playlist[i];
   cpTitle.textContent = t.title;
@@ -288,65 +249,26 @@ function setTrackUI(i){
   compactThumb.querySelector('img').src = t.cover;
 }
 
-// load track by index (no HEAD probing — relative src expected in repo)
-function loadTrack(i){
-  idx = i;
-  audio.src = playlist[i].src;
-  audio.load();
-  setTrackUI(i);
-  updateProgress(0,0);
-}
-
-// play index (start playback)
-function playIndex(i){
-  loadTrack(i);
-  audio.play().catch(()=>{});
-}
-
-// open modal and play selected
-function openAndPlay(i){
-  loadTrack(i);
-  openFull();
-  audio.play().catch(()=>{});
-}
-
+/* Воспроизведение/управление */
+async function playIndex(i){ await loadTrack(i); audio.play().catch(()=>{}); }
+async function openAndPlay(i){ await loadTrack(i); openFull(); audio.play().catch(()=>{}); }
 function nextTrack(){ idx = (idx + 1) % playlist.length; loadTrack(idx); audio.play().catch(()=>{}); }
 function prevTrack(){ idx = (idx - 1 + playlist.length) % playlist.length; loadTrack(idx); audio.play().catch(()=>{}); }
-
-function togglePlay(){
-  if(!audio.src){ loadTrack(idx); audio.play().catch(()=>{}); return; }
-  if(audio.paused){ audio.play(); } else { audio.pause(); }
-}
-
+function togglePlay(){ if(!audio.src){ loadTrack(idx).then(()=>audio.play().catch(()=>{})); return; } if(audio.paused){ audio.play(); } else { audio.pause(); } }
 function seekRelative(sec){ audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + sec)); }
+function updateProgress(current, duration){ const pct = duration ? (current/duration)*100 : 0; cpBar.style.width = pct + '%'; modalBar.style.width = pct + '%'; timeLabel.textContent = formatTime(current) + ' / ' + formatTime(duration); }
+function formatTime(s){ if(!isFinite(s)) return '0:00'; const m=Math.floor(s/60); const sec=Math.floor(s%60); return m+':'+String(sec).padStart(2,'0'); }
 
-function updateProgress(current, duration){
-  const pct = duration ? (current/duration)*100 : 0;
-  cpBar.style.width = pct + '%';
-  modalBar.style.width = pct + '%';
-  timeLabel.textContent = formatTime(current) + ' / ' + formatTime(duration);
-}
-
-function formatTime(s){
-  if(!isFinite(s)) return '0:00';
-  const m = Math.floor(s/60); const sec = Math.floor(s%60);
-  return m + ':' + String(sec).padStart(2,'0');
-}
-
-// audio events
-audio.addEventListener('play', ()=>{ playBtn.textContent = '⏸'; bigPlay.textContent='⏸'; ++plays; playsCountEl.textContent = plays; });
-audio.addEventListener('pause', ()=>{ playBtn.textContent = '▶️'; bigPlay.textContent='▶️'; });
+/* События audio */
+audio.addEventListener('play', ()=>{ playBtn.textContent='⏸'; bigPlay.textContent='⏸'; ++plays; playsCountEl.textContent = plays; });
+audio.addEventListener('pause', ()=>{ playBtn.textContent='▶️'; bigPlay.textContent='▶️'; });
 audio.addEventListener('timeupdate', ()=>{ updateProgress(audio.currentTime, audio.duration || 0); });
 audio.addEventListener('ended', ()=>{ nextTrack(); audio.play().catch(()=>{}); });
 
-// compact progress seeking
-cpProgress.addEventListener('pointerdown', (e)=>{
-  const rect = cpProgress.getBoundingClientRect();
-  const x = (e.clientX - rect.left); const pct = x/rect.width;
-  if(audio.duration) audio.currentTime = pct * audio.duration;
-});
+/* Компактный прогресс клик */
+cpProgress.addEventListener('pointerdown',(e)=>{ const rect=cpProgress.getBoundingClientRect(); const x=(e.clientX-rect.left); const pct=x/rect.width; if(audio.duration) audio.currentTime = pct * audio.duration; });
 
-// Tabs handling
+/* Вкладки */
 document.querySelectorAll('.tab').forEach(t=>{
   t.addEventListener('click', ()=>{
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
@@ -354,16 +276,14 @@ document.querySelectorAll('.tab').forEach(t=>{
     document.querySelectorAll('section').forEach(s=>s.style.display='none');
     const target = document.getElementById(t.dataset.target);
     if(target) target.style.display = 'flex';
-    if(t.dataset.target === 'all' && !allSection.dataset.filled){
-      fillAllRows(); allSection.dataset.filled = '1';
-    }
+    if(t.dataset.target === 'all' && !allSection.dataset.filled){ fillAllRows(); allSection.dataset.filled='1'; }
   });
 });
 
-// fill "Вся музыка" with actual playlist rows (no duplicates)
+/* Заполнение "Вся музыка" без дублирования */
 function fillAllRows(){
   allSection.innerHTML = '';
-  playlist.forEach((tr, i) => {
+  playlist.forEach((tr,i)=>{
     const div = document.createElement('div');
     div.className = 'row';
     div.tabIndex = 0;
@@ -380,86 +300,52 @@ function fillAllRows(){
     `;
     div.addEventListener('click', ()=>{ openAndPlay(i); });
     const btn = div.querySelector('.play-btn');
-    btn.addEventListener('click', (ev)=>{ ev.stopPropagation(); playIndex(i); });
+    btn.addEventListener('click',(ev)=>{ ev.stopPropagation(); playIndex(i); });
     allSection.appendChild(div);
   });
 }
 
-// modal controls
+/* Модал / визуализация (как прежде) */
 function openFull(){ modal.classList.add('open'); startVis(); }
 function closeFull(){ modal.classList.remove('open'); stopVis(); }
-window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeFull(); });
+window.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeFull(); });
 
-// visualization
 let audioCtx, analyser, sourceNode, dataArray, rafId;
-const canvas = visCanvas;
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById('vis'), ctx = canvas.getContext('2d');
 
 function startVis(){
   if(rafId) return;
-  if(!audioCtx){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 2048;
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-  }
-  try{
-    if(!sourceNode){
-      sourceNode = audioCtx.createMediaElementSource(audio);
-      sourceNode.connect(analyser);
-      analyser.connect(audioCtx.destination);
-    }
-  }catch(e){}
-  if(audioCtx.state === 'suspended'){ audioCtx.resume().catch(()=>{}); }
+  if(!audioCtx){ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); analyser = audioCtx.createAnalyser(); analyser.fftSize = 2048; dataArray = new Uint8Array(analyser.frequencyBinCount); }
+  try{ if(!sourceNode){ sourceNode = audioCtx.createMediaElementSource(audio); sourceNode.connect(analyser); analyser.connect(audioCtx.destination); } }catch(e){}
+  if(audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
   draw();
 }
-
-function stopVis(){
-  if(rafId) cancelAnimationFrame(rafId);
-  rafId = null;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-}
-
+function stopVis(){ if(rafId) cancelAnimationFrame(rafId); rafId = null; ctx.clearRect(0,0,canvas.width,canvas.height); }
 function draw(){
   rafId = requestAnimationFrame(draw);
   analyser.getByteFrequencyData(dataArray);
-
   const dpr = window.devicePixelRatio || 1;
-  const w = canvas.clientWidth * dpr;
-  const h = canvas.clientHeight * dpr;
+  const w = canvas.clientWidth * dpr, h = canvas.clientHeight * dpr;
   if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
-
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
   const grad = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-  grad.addColorStop(0, 'rgba(110,231,255,0.06)');
-  grad.addColorStop(0.6, 'rgba(167,139,250,0.04)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  ctx.lineWidth = 2 * dpr;
-  ctx.strokeStyle = 'rgba(255,255,255,0.92)';
-  ctx.beginPath();
+  grad.addColorStop(0,'rgba(110,231,255,0.06)'); grad.addColorStop(0.6,'rgba(167,139,250,0.04)');
+  ctx.fillStyle = grad; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.lineWidth = 2 * dpr; ctx.strokeStyle = 'rgba(255,255,255,0.92)'; ctx.beginPath();
   const step = Math.max(1, Math.floor(dataArray.length / (canvas.width / (4*dpr))));
   let x = 0;
   for(let i=0;i<dataArray.length;i+=step){
     const v = dataArray[i] / 255.0;
     const y = canvas.height - (v * canvas.height * 0.85) - (Math.sin(i/5 + performance.now()/500)*8*dpr);
-    if(x===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     x += (canvas.width / Math.ceil(dataArray.length/step));
   }
   ctx.stroke();
-
   const peak = Math.max(...dataArray);
-  if(peak > 160){
-    ctx.fillStyle = 'rgba(110,231,255,0.08)';
-    ctx.beginPath();
-    ctx.ellipse(canvas.width*0.5, canvas.height*0.35, peak*1.2*dpr, peak*0.8*dpr, 0, 0, Math.PI*2);
-    ctx.fill();
-  }
+  if(peak > 160){ ctx.fillStyle = 'rgba(110,231,255,0.08)'; ctx.beginPath(); ctx.ellipse(canvas.width*0.5, canvas.height*0.35, peak*1.2*dpr, peak*0.8*dpr, 0, 0, Math.PI*2); ctx.fill(); }
 }
 
-// initial setup: load first track metadata to UI, fill all section when opened
+/* Инициализация UI: не загружаем файл сразу, только готовим UI */
 setTrackUI(0);
 </script>
 </body>
