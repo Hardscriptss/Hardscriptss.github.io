@@ -1,22 +1,427 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Большая круглая кнопка</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Liquid Music Player</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg2: #0e1621;
+      --glass: rgba(255,255,255,0.08);
+      --text: #e9f0f6;
+      --muted: #a8b3be;
+      --accent: #6ee7ff;
+      --accent2: #a78bfa;
+      --accent3: #22d3ee;
+      --danger: #ff6b6b;
+    }
+
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{
+      margin:0; padding:0; background:var(--bg); color:var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* Background gradient + subtle noise */
+    body::before{
+      content:""; position:fixed; inset:0; z-index:-2;
+      background:
+        radial-gradient(1200px 600px at 20% 10%, #0b1f33 0%, transparent 55%),
+        radial-gradient(1000px 800px at 80% 90%, #1b1030 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      filter: saturate(110%);
+    }
+    body::after{
+      content:""; position:fixed; inset:0; z-index:-1; opacity:.12; pointer-events:none;
+      background-image:url("data:image/svg+xml;utf8,\
+      <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'>\
+      <filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' /></filter>\
+      <rect width='100%' height='100%' filter='url(#f)'/></svg>");
+      mix-blend-mode:soft-light;
+    }
+
+    .app{
+      max-width:720px; margin:0 auto; padding:16px 16px 100px; /* bottom space for player */
+    }
+
+    header{
+      display:flex; align-items:center; gap:12px; padding:8px 0 16px;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:50%;
+      background: conic-gradient(from 180deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+      box-shadow: 0 0 24px rgba(102, 240, 255, 0.35);
+    }
+    .title{
+      line-height:1.1;
+    }
+    .title h1{ font-size:20px; margin:0; letter-spacing:.2px;}
+    .title p{ margin:0; color:var(--muted); font-size:13px;}
+
+    /* Search bar */
+    .search{
+      margin:8px 0 18px; position:relative;
+    }
+    .search input{
+      width:100%; padding:14px 44px 14px 14px; border-radius:16px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      backdrop-filter: blur(14px); color:var(--text);
+      outline:none;
+    }
+    .search .icon{
+      position:absolute; right:10px; top:50%; transform:translateY(-50%);
+      width:28px; height:28px; border-radius:50%;
+      background: radial-gradient(120% 120% at 20% 20%, var(--accent) 0%, var(--accent2) 60%, var(--accent3) 100%);
+      box-shadow: 0 8px 20px rgba(102, 240, 255, 0.25), inset 0 0 22px rgba(255,255,255,0.15);
+    }
+
+    /* Playlist cards */
+    .section-label{ font-size:13px; color:var(--muted); margin:6px 2px 10px;}
+    .grid{
+      display:grid; gap:12px; grid-template-columns: 1fr 1fr; 
+    }
+    @media (min-width:560px){
+      .grid{ grid-template-columns: 1fr 1fr 1fr;}
+    }
+    .card{
+      position:relative; overflow:hidden; border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      padding:12px;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover{ transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.25);}
+    .cover{
+      aspect-ratio: 1/1; border-radius:12px; overflow:hidden;
+      background: radial-gradient(160% 140% at 20% 20%, #1f3a5f, #261449);
+      position:relative;
+    }
+    .blob{
+      position:absolute; width:120%; height:120%; left:-10%; top:-10%;
+      background: radial-gradient(closest-side, rgba(110, 231, 255, .45), transparent 60%);
+      filter: blur(14px);
+      animation: float 8s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{ transform: translate(0,0) scale(1);}
+      50%{ transform: translate(10px,-12px) scale(1.08);}
+    }
+    .meta{
+      margin-top:10px;
+    }
+    .meta .name{ font-weight:600; font-size:15px;}
+    .meta .artist{ font-size:12px; color:var(--muted);}
+
+    /* Sticky bottom player */
+    .player{
+      position:fixed; left:0; right:0; bottom:0; padding:10px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.12));
+      backdrop-filter: blur(18px);
+      border-top:1px solid rgba(255,255,255,0.08);
+      display:flex; align-items:center; gap:12px;
+    }
+    .track-thumb{
+      width:52px; height:52px; border-radius:12px; overflow:hidden;
+      background: radial-gradient(160% 140% at 20% 20%, #153147, #20133f);
+      position:relative;
+    }
+    .track-thumb .blob{ animation: float 7s ease-in-out infinite;}
+    .track-info{ flex:1; min-width:0;}
+    .track-info .title{ font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .track-info .artist{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+    /* Liquid buttons */
+    .controls{
+      display:flex; align-items:center; gap:10px;
+    }
+    .btn{
+      position:relative; width:44px; height:44px; border-radius:50%;
+      border:1px solid rgba(255,255,255,0.12);
+      background:
+        radial-gradient(120% 120% at 20% 20%, rgba(110,231,255,0.25), rgba(167,139,250,0.2)),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      backdrop-filter: blur(10px);
+      box-shadow:
+        inset 0 0 22px rgba(255,255,255,0.12),
+        0 10px 28px rgba(102, 240, 255, 0.15);
+      overflow:hidden;
+      transition: transform .08s ease, box-shadow .2s ease;
+    }
+    .btn:active{ transform: scale(0.97); }
+    .btn .goo{
+      position:absolute; inset:-30% -30%; filter: blur(14px); opacity:.6;
+      background: radial-gradient(closest-side, var(--accent3), transparent 60%);
+      animation: goo 3.8s ease-in-out infinite;
+    }
+    @keyframes goo{
+      0%,100%{ transform: translate(0,0) scale(1);}
+      33%{ transform: translate(-12px,6px) scale(1.2);}
+      66%{ transform: translate(14px,-8px) scale(0.9);}
+    }
+    .btn svg{ width:22px; height:22px; fill:none; stroke:#eaf6ff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .btn.secondary{ width:38px; height:38px; }
+    .btn.primary{ width:54px; height:54px; box-shadow: inset 0 0 28px rgba(255,255,255,0.18), 0 12px 32px rgba(167, 139, 250, 0.18); }
+
+    /* Progress bar */
+    .progress{
+      position:relative; height:6px; border-radius:10px; overflow:hidden;
+      background: rgba(255,255,255,0.12); margin:8px 0 0;
+    }
+    .progress .bar{
+      height:100%; width:0%;
+      background: linear-gradient(90deg, var(--accent3), var(--accent2));
+      box-shadow: 0 0 14px rgba(110, 231, 255, 0.45);
+      transition: width .2s linear;
+    }
+
+    /* Time row */
+    .time{ display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:4px; }
+
+    /* Mini toast */
+    .toast{
+      position:fixed; left:50%; bottom:80px; transform:translateX(-50%);
+      padding:10px 14px; border-radius:12px; font-size:13px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border:1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+      opacity:0; pointer-events:none; transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(-4px); }
+
+    /* Utility */
+    .hidden{ display:none !important; }
+  </style>
 </head>
 <body>
-  <h1>Нажми кнопку 🎶</h1>
-  
-  <button onclick="playSound()">Humba</button>
+  <div class="app">
+    <header>
+      <div class="logo"></div>
+      <div class="title">
+        <h1>Liquid Player</h1>
+        <p>Современный минимализм и живые кнопки</p>
+      </div>
+    </header>
 
-  <audio id="myAudio" src="Humba.mp3"></audio>
+    <div class="search">
+      <input id="search" type="text" placeholder="Поиск треков..." />
+      <div class="icon"></div>
+    </div>
+
+    <div class="section-label">Рекомендации</div>
+    <div id="grid" class="grid">
+      <!-- Cards generated by JS -->
+    </div>
+  </div>
+
+  <!-- Sticky bottom player -->
+  <div class="player" id="player">
+    <div class="track-thumb">
+      <div class="blob"></div>
+    </div>
+    <div class="track-info">
+      <div class="title" id="trackTitle">Выберите трек</div>
+      <div class="artist" id="trackArtist">Плейлист ниже</div>
+      <div class="progress" id="progress">
+        <div class="bar" id="progressBar"></div>
+      </div>
+      <div class="time">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn secondary" id="prevBtn" aria-label="Предыдущий">
+        <div class="goo"></div>
+        <svg viewBox="0 0 24 24"><path d="M5 5v14M19 5l-10 7 10 7"/></svg>
+      </button>
+      <button class="btn primary" id="playPauseBtn" aria-label="Пуск/Пауза">
+        <div class="goo"></div>
+        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+      </button>
+      <button class="btn secondary" id="nextBtn" aria-label="Следующий">
+        <div class="goo"></div>
+        <svg viewBox="0 0 24 24"><path d="M19 5v14M5 5l10 7-10 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Добавлено в очередь</div>
+
+  <audio id="audio" preload="metadata" crossorigin="anonymous"></audio>
 
   <script>
-    function playSound() {
-      const audio = document.getElementById("myAudio");
-      audio.play();
+    const audio = document.getElementById('audio');
+    const grid = document.getElementById('grid');
+    const search = document.getElementById('search');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const trackTitle = document.getElementById('trackTitle');
+    const trackArtist = document.getElementById('trackArtist');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const progress = document.getElementById('progress');
+    const toast = document.getElementById('toast');
+
+    // Demo playlist: replace urls with your audio files
+    const playlist = [
+      {
+        id: 1,
+        name: "Neon Drift",
+        artist: "Aetherwave",
+        coverHue: [31, 63, 212],
+        url: "https://cdn.pixabay.com/download/audio/2021/10/27/audio_8e2c2e3b47.mp3?filename=ambient-10957.mp3"
+      },
+      {
+        id: 2,
+        name: "Liquid Pulse",
+        artist: "Silica",
+        coverHue: [90, 12, 180],
+        url: "https://cdn.pixabay.com/download/audio/2022/03/01/audio_3b62b7ca51.mp3?filename=chill-ambient-11085.mp3"
+      },
+      {
+        id: 3,
+        name: "Glass Horizon",
+        artist: "Nordlight",
+        coverHue: [220, 40, 120],
+        url: "https://cdn.pixabay.com/download/audio/2022/03/09/audio_7f9a2e6a9d.mp3?filename=deep-ambient-11147.mp3"
+      }
+    ];
+
+    let index = 0;
+    let seeking = false;
+
+    function formatTime(sec){
+      if (!isFinite(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return m + ":" + String(s).padStart(2,'0');
     }
+
+    function setCoverBlob(el, hue){
+      el.style.background = `radial-gradient(160% 140% at 20% 20%, hsl(${hue[0]} 60% 35%), hsl(${hue[1]} 50% 20%))`;
+    }
+
+    function renderGrid(items){
+      grid.innerHTML = "";
+      items.forEach((t, i) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="cover">
+            <div class="blob"></div>
+          </div>
+          <div class="meta">
+            <div class="name">${t.name}</div>
+            <div class="artist">${t.artist}</div>
+          </div>
+        `;
+        const cover = card.querySelector('.cover');
+        setCoverBlob(cover, t.coverHue);
+        card.addEventListener('click', () => {
+          index = i;
+          loadTrack(playlist[index], true);
+          showToast("Воспроизведение: " + t.name);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function loadTrack(track, autoplay=false){
+      audio.src = track.url;
+      trackTitle.textContent = track.name;
+      trackArtist.textContent = track.artist;
+      durationEl.textContent = "0:00";
+      progressBar.style.width = "0%";
+      togglePlayIcon(false); // show play by default
+      // update thumb color
+      const thumb = document.querySelector('.track-thumb');
+      setCoverBlob(thumb, track.coverHue);
+      if (autoplay){
+        audio.play().then(() => togglePlayIcon(true)).catch(() => {});
+      }
+    }
+
+    function togglePlayIcon(isPlaying){
+      playIcon.classList.toggle('hidden', isPlaying);
+      pauseIcon.classList.toggle('hidden', !isPlaying);
+    }
+
+    playPauseBtn.addEventListener('click', () => {
+      if (!audio.src) {
+        loadTrack(playlist[index], true);
+        return;
+      }
+      if (audio.paused){
+        audio.play().then(() => togglePlayIcon(true)).catch(() => {});
+      } else {
+        audio.pause();
+        togglePlayIcon(false);
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      index = (index - 1 + playlist.length) % playlist.length;
+      loadTrack(playlist[index], true);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % playlist.length;
+      loadTrack(playlist[index], true);
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      durationEl.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      if (seeking) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = `${pct || 0}%`;
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    });
+
+    audio.addEventListener('ended', () => {
+      nextBtn.click();
+    });
+
+    // Seek on progress tap/drag
+    let isDragging = false;
+    function seekFromEvent(e){
+      const rect = progress.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const pct = Math.max(0, Math.min(1, x / rect.width));
+      progressBar.style.width = `${pct*100}%`;
+      audio.currentTime = pct * audio.duration;
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    }
+    progress.addEventListener('pointerdown', (e) => { seeking = true; isDragging=true; seekFromEvent(e); });
+    progress.addEventListener('pointermove', (e) => { if(isDragging){ seekFromEvent(e);} });
+    window.addEventListener('pointerup', () => { if(isDragging){ isDragging=false; seeking=false; } });
+
+    // Search filter
+    search.addEventListener('input', () => {
+      const q = search.value.toLowerCase().trim();
+      const filtered = playlist.filter(t =>
+        t.name.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q)
+      );
+      renderGrid(filtered);
+    });
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1400);
+    }
+
+    // Initial render
+    renderGrid(playlist);
   </script>
 </body>
 </html>
